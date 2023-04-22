@@ -1,4 +1,5 @@
-use actix_web::{post, web, App, HttpResponse, HttpServer, Responder};
+use actix_governor::{Governor, GovernorConfigBuilder};
+use actix_web::{middleware::Logger, post, web, App, HttpResponse, HttpServer, Responder};
 use webhook_listener::Config;
 
 #[post("/webhooks/{key}")]
@@ -63,8 +64,18 @@ async fn main() -> std::io::Result<()> {
         }
     }
 
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
+    let governor_conf = GovernorConfigBuilder::default()
+        .per_second(3)
+        .burst_size(20)
+        .finish()
+        .unwrap();
+
     HttpServer::new(move || {
         App::new()
+            .wrap(Logger::default())
+            .wrap(Governor::new(&governor_conf))
             .app_data(web::Data::new(config.clone()))
             .service(webhook)
     })

@@ -18,7 +18,7 @@ async fn webhook(
 
     // write req_body to file under ./data/{key}/{timestamp}.json
     // if error, return 500
-    let timestamp = chrono::Local::now().timestamp();
+    let timestamp = time::OffsetDateTime::now_utc().unix_timestamp();
     let filename = format!("./data/{}/{}.json", key, timestamp);
     match std::fs::write(&filename, &req_body) {
         Ok(_) => (),

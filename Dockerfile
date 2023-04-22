@@ -21,7 +21,7 @@ RUN cargo build --release
 
 
 # our final base
-FROM debian:buster-slim as runner
+FROM gcr.io/distroless/static-debian11 as runner
 
 # copy the build artifact from the build stage
 COPY --from=build /webhook-listener/target/release/webhook-listener .

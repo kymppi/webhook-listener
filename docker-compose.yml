@@ -1,0 +1,18 @@
+version: '3.3'
+networks:
+    traefik:
+        external: true
+services:
+    webhooks-listener:
+        networks:
+            - traefik
+        volumes:
+            - './config.toml:/config.toml'
+            - './data/:/data/'
+        image: webhook-listener
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.test.rule=Host(`test.midka.dev`)"
+          - "traefik.http.routers.test.entrypoints=websecure"
+          - "traefik.http.routers.test.tls.certresolver=httpchallenge"
+          - "traefik.http.services.test.loadbalancer.server.port=8080"

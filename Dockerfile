@@ -48,7 +48,7 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 
 
 # our final base
-FROM alpine:3.14 as runner
+FROM alpine:3.17 as runner
 
 # copy the build artifact from the build stage
 COPY --from=build /webhook-listener/target/x86_64-unknown-linux-musl/release/webhook-listener /

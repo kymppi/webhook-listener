@@ -1,4 +1,4 @@
-FROM rust:1.69 as build
+FROM rust:1.77 as build
 
 # from https://github.com/clux/muslrust/blob/06dc8cc98164208a495fedbcff2e93ff498ac3ce/Dockerfile#L15-L36
 RUN apt-get update && apt-get install -y \
